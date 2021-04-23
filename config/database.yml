@@ -16,4 +16,4 @@ test:
 
 production:
   <<: *default
-  database: api_back_production
+  database: pos_back_production
