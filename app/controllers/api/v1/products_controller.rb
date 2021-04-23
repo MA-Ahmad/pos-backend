@@ -7,7 +7,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
     def create
       @product = Product.new(product_params)
       if @product.save
-        render json: { product: @product, notice: "Product created successfully" }
+        render json: @product
       else
         render json: { error: @product.errors.full_messages.to_sentence }, status: 422
       end
