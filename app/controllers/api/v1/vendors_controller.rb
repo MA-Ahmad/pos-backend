@@ -7,7 +7,7 @@ class Api::V1::VendorsController < Api::V1::BaseController
     def create
         @vendor = Vendor.new(vendor_params)
         if @vendor.save
-          render json: { vendor: @vendor, notice: "Vendor created successfully" }
+          render json: @vendor, serializer: VendorSerializer
         else
           render json: { error: @vendor.errors.full_messages.to_sentence }, status: 422
         end
@@ -31,7 +31,7 @@ class Api::V1::VendorsController < Api::V1::BaseController
           else
             vendors_count = vendors.size
             vendors.destroy_all
-            render json: { notice: "#{vendors_count} vendors has been deleted." }
+            render json: "#{vendors_count} vendors has been deleted."
           end
       end
     

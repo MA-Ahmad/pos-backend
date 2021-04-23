@@ -31,7 +31,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
         else
           products_count = products.size
           products.destroy_all
-          render json: { notice: "#{products_count} products has been deleted." }
+          render json: "#{products_count} products has been deleted."
         end
     end
   

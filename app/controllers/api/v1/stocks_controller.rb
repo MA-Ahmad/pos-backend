@@ -8,7 +8,7 @@ class Api::V1::StocksController < Api::V1::BaseController
     def create
       @stock = Stock.new(stock_params)
       if @stock.save
-        render json: { stock: @stock, notice: "Stock created successfully" }
+        render json: @stock
       else
         render json: { error: @stock.errors.full_messages.to_sentence }, status: 422
       end
@@ -31,7 +31,7 @@ class Api::V1::StocksController < Api::V1::BaseController
         else
           stocks_count = stocks.size
           stocks.destroy_all
-          render json: { notice: "#{stocks_count} stocks has been added deleted." }
+          render json: "#{stocks_count} stocks has been added deleted."
         end
     end
   
