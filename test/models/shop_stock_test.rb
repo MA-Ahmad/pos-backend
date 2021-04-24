@@ -1,6 +1,6 @@
 require "test_helper"
 
-class FactoryTest < ActiveSupport::TestCase
+class ShopStockTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,0 +1,2 @@
+class FactoryStock < Stock
+end

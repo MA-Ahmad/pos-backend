@@ -10,20 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_24_112059) do
+ActiveRecord::Schema.define(version: 2021_04_24_122334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "cold_storages", force: :cascade do |t|
+  create_table "coldstorage_stocks", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "factories", force: :cascade do |t|
+  create_table "factory_stocks", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "vendor_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -32,7 +33,7 @@ ActiveRecord::Schema.define(version: 2021_04_24_112059) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "shops", force: :cascade do |t|
+  create_table "shop_stocks", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_04_24_112059) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "type"
+    t.string "vendor_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
   end
 
@@ -72,10 +74,9 @@ ActiveRecord::Schema.define(version: 2021_04_24_112059) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "factory_id"
   end
 
-  create_table "warehouses", force: :cascade do |t|
+  create_table "warehouse_stocks", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

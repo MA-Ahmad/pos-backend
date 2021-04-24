@@ -1,0 +1,2 @@
+class ShopStock < Stock
+end

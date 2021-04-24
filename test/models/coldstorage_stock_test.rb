@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ColdStorageTest < ActiveSupport::TestCase
+class ColdstorageStockTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -3,6 +3,7 @@ class Api::V1::StocksController < Api::V1::BaseController
   
     def index
       render json: Stock.includes(:product, :vendor).all.order(created_at: :desc)
+    #   render json: Stock.includes(:product, :vendor).all.order(created_at: :desc)
     end
   
     def create
