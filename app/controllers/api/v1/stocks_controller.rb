@@ -18,7 +18,7 @@ class Api::V1::StocksController < Api::V1::BaseController
     def update
       if @stock.blank?
         respond_with_error "Stock with id #{params[:id]} not found.", :not_found
-      elsif @stock.update(stock_params)
+      elsif @stock.handle_top_order(params[:stock][:quantity]) && @stock.update(stock_params)
         render json: @stock
       else
         render json: { error: @stock.errors.full_messages.to_sentence }, status: 422
