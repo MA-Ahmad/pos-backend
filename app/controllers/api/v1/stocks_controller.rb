@@ -2,7 +2,7 @@ class Api::V1::StocksController < Api::V1::BaseController
     before_action :set_stock, only: [:edit, :update, :destroy]
   
     def index
-      render json: Stock.includes(:product, :vendor).all.order(created_at: :desc)
+      render json: Stock.where(type: params[:type]).includes(:product, :vendor).all.order(created_at: :desc)
     #   render json: Stock.includes(:product, :vendor).all.order(created_at: :desc)
     end
   
@@ -53,7 +53,7 @@ class Api::V1::StocksController < Api::V1::BaseController
       end
   
       def stock_params
-        params.require(:stock).permit(:quantity, :price, :vendor_id, :product_id)
+        params.require(:stock).permit(:type, :quantity, :price, :vendor_id, :product_id)
       end
   end
   
