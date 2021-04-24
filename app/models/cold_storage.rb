@@ -1,0 +1,2 @@
+class ColdStorage < Stock
+end

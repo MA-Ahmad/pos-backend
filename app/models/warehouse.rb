@@ -1,0 +1,2 @@
+class Warehouse < Stock
+end

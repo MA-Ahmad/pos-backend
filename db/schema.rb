@@ -10,11 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_22_163222) do
+ActiveRecord::Schema.define(version: 2021_04_24_112059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "cold_storages", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "factories", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
@@ -22,15 +32,19 @@ ActiveRecord::Schema.define(version: 2021_04_22_163222) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "shops", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "stocks", force: :cascade do |t|
     t.float "quantity"
     t.float "price"
-    t.bigint "vendor_id", null: false
     t.bigint "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
     t.index ["product_id"], name: "index_stocks_on_product_id"
-    t.index ["vendor_id"], name: "index_stocks_on_vendor_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -58,8 +72,13 @@ ActiveRecord::Schema.define(version: 2021_04_22_163222) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "factory_id"
+  end
+
+  create_table "warehouses", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "stocks", "products"
-  add_foreign_key "stocks", "vendors"
 end
