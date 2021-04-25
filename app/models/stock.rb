@@ -1,7 +1,14 @@
 class Stock < ApplicationRecord
+  before_save :round_values
   before_create :handle_stock
+  validates :price, :quantity, :type, presence: true
   belongs_to :vendor, required: false
   belongs_to :product
+
+  def round_values
+    self.quantity = Float(self.quantity).round(2)
+    self.price = Float(self.price).round(2)
+  end
 
   def handle_stock
     if ['ColdstorageStock', 'WarehouseStock', 'ShopStock'].include? type
@@ -35,6 +42,8 @@ class Stock < ApplicationRecord
         stocks.order(created_at: :desc).last.increment!(:quantity, params_quantity) if stocks.present?
         true
       end
+    else
+      true
     end
   end
 
