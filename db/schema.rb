@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_24_122334) do
+ActiveRecord::Schema.define(version: 2021_04_26_164023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2021_04_24_122334) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "type"
     t.string "vendor_id"
+    t.float "balance"
     t.index ["product_id"], name: "index_stocks_on_product_id"
   end
 
