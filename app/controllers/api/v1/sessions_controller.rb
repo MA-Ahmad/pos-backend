@@ -12,7 +12,8 @@ class Api::V1::SessionsController < Api::V1::BaseController
       sign_in(user)
       # render json: { auth_token: user.authentication_token, user: user, is_admin: user.super_admin? },
               # location: root_path, status: :created
-      render json: { auth_token: user.authentication_token, user: user },
+      user_hash = { email: user.email, first_name: user.first_name, last_name: user.last_name, company_id: user.company_id, current_sign_in_at: user.current_sign_in_at }
+      render json: { auth_token: user.authentication_token, user: user_hash },
               location: root_path, status: :created
     end
   end

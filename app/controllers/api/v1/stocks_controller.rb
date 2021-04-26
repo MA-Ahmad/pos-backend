@@ -1,8 +1,9 @@
 class Api::V1::StocksController < Api::V1::BaseController
     before_action :set_stock, only: [:edit, :update, :destroy]
-  
+    before_action :set_company, only: :index
+
     def index
-      render json: Stock.where(type: params[:type]).includes(:product, :vendor).all.order(created_at: :desc)
+      render json: @company.stocks.where(type: params[:type]).includes(:product, :vendor).all.order(created_at: :desc)
     #   render json: Stock.includes(:product, :vendor).all.order(created_at: :desc)
     end
   
@@ -48,12 +49,16 @@ class Api::V1::StocksController < Api::V1::BaseController
   
     private
   
+      def set_company
+        @company = Company.find(params[:company_id])
+      end
+
       def set_stock
         @stock = Stock.find(params[:id])
       end
   
       def stock_params
-        params.require(:stock).permit(:type, :quantity, :price, :balance, :vendor_id, :product_id)
+        params.require(:stock).permit(:type, :quantity, :price, :balance, :vendor_id, :product_id, :company_id)
       end
   end
   

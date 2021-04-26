@@ -1,7 +1,8 @@
 class Api::V1::VendorsController < Api::V1::BaseController
-  
+    before_action :set_company, only: :index
+
     def index
-      render json: Vendor.all.order(created_at: :desc)
+      render json: @company.vendors.order(created_at: :desc)
     end
 
     def create
@@ -47,8 +48,12 @@ class Api::V1::VendorsController < Api::V1::BaseController
   
       private
     
+        def set_company
+          @company = Company.find(params[:company_id])
+        end
+
         def vendor_params
-          params.require(:vendor).permit(:name)
+          params.require(:vendor).permit(:name, :company_id)
         end
 
 end

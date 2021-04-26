@@ -26,10 +26,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   def update
     if @user.blank?
       respond_with_error "User with id #{params[:id]} not found.", :not_found
-
     elsif @user.update(user_params)
       render json: @user
-
     else
       render json: { error: @user.errors.full_messages.to_sentence }, status: 422
     end
@@ -54,6 +52,6 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
 
     def user_params
-      params.require(:user).permit(:email, :first_name, :last_name, :password, :password_confirmation)
+      params.require(:user).permit(:email, :first_name, :last_name, :company_id, :password, :password_confirmation)
     end
 end

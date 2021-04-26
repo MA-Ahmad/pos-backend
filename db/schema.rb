@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_26_164023) do
+ActiveRecord::Schema.define(version: 2021_04_26_205344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "coldstorage_stocks", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "companies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -31,6 +37,8 @@ ActiveRecord::Schema.define(version: 2021_04_26_164023) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "company_id", null: false
+    t.index ["company_id"], name: "index_products_on_company_id"
   end
 
   create_table "shop_stocks", force: :cascade do |t|
@@ -47,6 +55,8 @@ ActiveRecord::Schema.define(version: 2021_04_26_164023) do
     t.string "type"
     t.string "vendor_id"
     t.float "balance"
+    t.uuid "company_id", null: false
+    t.index ["company_id"], name: "index_stocks_on_company_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
   end
 
@@ -67,6 +77,8 @@ ActiveRecord::Schema.define(version: 2021_04_26_164023) do
     t.string "authentication_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "company_id", null: false
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -75,6 +87,8 @@ ActiveRecord::Schema.define(version: 2021_04_26_164023) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "company_id", null: false
+    t.index ["company_id"], name: "index_vendors_on_company_id"
   end
 
   create_table "warehouse_stocks", force: :cascade do |t|
@@ -82,5 +96,9 @@ ActiveRecord::Schema.define(version: 2021_04_26_164023) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "products", "companies"
+  add_foreign_key "stocks", "companies"
   add_foreign_key "stocks", "products"
+  add_foreign_key "users", "companies"
+  add_foreign_key "vendors", "companies"
 end
