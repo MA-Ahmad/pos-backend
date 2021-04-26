@@ -13,8 +13,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def create
-    user = User.create user_params
-
+    company = Company.find_or_create_by(id: Company.first&.id)
+    user = User.create user_params.merge(company_id: company.id)
     if user.valid?
       sign_in(user)
       render json: { user: user, auth_token: user.authentication_token }
