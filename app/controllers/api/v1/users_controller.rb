@@ -17,7 +17,8 @@ class Api::V1::UsersController < Api::V1::BaseController
     user = User.create user_params.merge(company_id: company.id)
     if user.valid?
       sign_in(user)
-      render json: { user: user, auth_token: user.authentication_token }
+      user_hash = { email: user.email, first_name: user.first_name, last_name: user.last_name, company_id: user.company_id, current_sign_in_at: user.current_sign_in_at }
+      render json: { user: user_hash, auth_token: user.authentication_token }
     else
       render json: { error: user.errors.full_messages.to_sentence }, status: 422
     end
