@@ -2,6 +2,7 @@ class Stock < ApplicationRecord
   before_save :round_values
   before_create :handle_stock
   validates :price, :quantity, :type, presence: true
+  # validates_uniqueness_of :sku, scope: :company_id
   belongs_to :company
   belongs_to :vendor, required: false
   belongs_to :product

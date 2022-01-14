@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       end
 
       resources :users, only: [:show, :create, :update, :destroy], constraints: { id: /.*/ }
-      resources :products, only: [:index, :create, :update] do
+      resources :products, only: [:index, :create, :update, :show] do
         collection do
           post 'bulk_delete'
         end
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
           post 'bulk_delete'
         end
       end
+      resources :transactions, only: :create
     end
   end
 
