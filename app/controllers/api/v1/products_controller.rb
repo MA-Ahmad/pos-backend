@@ -14,6 +14,16 @@ class Api::V1::ProductsController < Api::V1::BaseController
       end
     end
 
+    def show
+      stock = ShopStock.find_by(sku: params[:id])
+      if (stock.present?)
+        prod_obj = { sku: stock.sku, id: stock.product.id, name: stock.product.name, price: stock.price }
+        render json: prod_obj
+      else
+        render json: "Product not found"
+      end
+    end
+
     def update
       @product = Product.find(params[:id])
       if @product.blank?
