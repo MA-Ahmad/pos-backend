@@ -58,7 +58,7 @@ class Api::V1::StocksController < Api::V1::BaseController
       end
   
       def stock_params
-        params.require(:stock).permit(:type, :quantity, :price, :balance, :vendor_id, :product_id, :company_id, :sku)
+        params.require(:stock).permit(:type, :quantity, :price, :balance, :paid_amount, :vendor_id, :product_id, :company_id, :sku)
       end
   end
   

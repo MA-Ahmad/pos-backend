@@ -12,19 +12,45 @@ class Stock < ApplicationRecord
     self.price = Float(self.price).round(2)
   end
 
+  STOCK_TYPES = { cold: 'ColdstorageStock', warehouse: 'WarehouseStock', shop: 'ShopStock'}
+  STOCK_CATEGORIES = ['FactoryStock', 'ColdstorageStock', 'WarehouseStock', 'ShopStock']
+
   def handle_stock
-    if ['ColdstorageStock', 'WarehouseStock', 'ShopStock'].include? type
-      stocks = get_stocks type
-      stocks_sum = stocks.sum(:quantity)
-      params_quantity = Float(quantity)
-      if stocks_sum >= params_quantity
-        stocks_total_larger_case stocks_sum, params_quantity, stocks 
-      else
-        # self.errors.add(:base, 'No stock available') && false
-        throw(:abort)
+    cat_index = STOCK_CATEGORIES.index(type)
+    params_quantity = Float(quantity)
+    if STOCK_CATEGORIES.include?(type) && cat_index != 0
+      (cat_index - 1).downto(0) do |i|
+        model_name = STOCK_CATEGORIES[i].constantize
+        stocks = model_name.where(product_id: product_id)
+        stocks.order(created_at: :desc).each do |stock|
+          if stock.quantity > params_quantity && params_quantity > 0
+              stock.decrement!(:quantity, params_quantity)
+              params_quantity = 0
+          elsif params_quantity > 0
+              params_quantity -= stock.quantity
+              stock.decrement!(:quantity, stock.quantity)
+              stock.destroy
+          end
+        end
+        break if params_quantity.zero?
       end
+      throw(:abort) unless params_quantity.zero?
     end
   end
+
+  # def handle_stock
+  #   if ['ColdstorageStock', 'WarehouseStock', 'ShopStock'].include? type
+  #     stocks = get_stocks type
+  #     stocks_sum = stocks.sum(:quantity)
+  #     params_quantity = Float(quantity)
+  #     if stocks_sum >= params_quantity
+  #       stocks_total_larger_case stocks_sum, params_quantity, stocks 
+  #     else
+  #       # self.errors.add(:base, 'No stock available') && false
+  #       throw(:abort)
+  #     end
+  #   end
+  # end
 
   def handle_top_order params_quantity
     params_quantity = Float(params_quantity)
@@ -49,7 +75,7 @@ class Stock < ApplicationRecord
     end
   end
 
-  def stocks_total_larger_case stocks_sum, params_quantity, stocks 
+  def stocks_total_larger_case stocks_sum, params_quantity, stocks
     stocks.order(created_at: :desc).each do |stock|
       if stock.quantity > params_quantity && params_quantity > 0
           stock.decrement!(:quantity, params_quantity)
@@ -63,6 +89,14 @@ class Stock < ApplicationRecord
   end
 
   def get_stocks type
+    case type
+    when STOCK_TYPES[:cold]
+      FactoryStock.where(product_id: product_id)
+    when STOCK_TYPES[:warehouse]
+      ColdstorageStock.where(product_id: product_id)
+    when STOCK_TYPES[:shop]
+      WarehouseStock.where(product_id: product_id)
+    end
     if type == 'ColdstorageStock'
       FactoryStock.where(product_id: product_id)
     elsif type == 'WarehouseStock'

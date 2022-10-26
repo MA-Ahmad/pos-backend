@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_21_130558) do
+ActiveRecord::Schema.define(version: 2022_10_24_161135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2021_12_21_130558) do
     t.float "balance"
     t.uuid "company_id", null: false
     t.string "sku"
+    t.float "paid_amount"
     t.index ["company_id"], name: "index_stocks_on_company_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
   end
